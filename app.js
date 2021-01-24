@@ -10,31 +10,44 @@
         this.fact = fact;
         this.image = image;
     }
+    function Dino(array){
+    this.array = [];
+    }
 
     // Create Dino Objects
     const getDinoData = async () => {
         const fetchedData = await fetch("dino.json");
         const data = await fetchedData.json();
 
-        return data.Dinos;
+         return data.Dinos;
     };
-
-
-
-
-
-
-
-
 
     // Create Human Object
 
-    function Humain(){}
+    function Human(name, weight, diet, height){
+        this.name = name;
+        this.height = height;
+        this.weight = weight;
+        this.diet = diet;
+    }
 
-    const humain = new Humain();
+
+
 
     // Use IIFE to get human data from form
 
+    const button = document.getElementById("btn");
+    button.addEventListener("click", function(){
+        let human = new Human("",  "", "", "");
+        // Use IIFE to get human data from form
+        (function getHumanData(){
+            human.name = document.getElementById('name').value;
+            human.height = (document.getElementById('feet').value * 12 ) + document.getElementById('inches').value;
+            human.weight = document.getElementById('weight').value;
+            human.diet = document.getElementById('diet').value;
+        })();
+        console.log(human)
+    });
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
