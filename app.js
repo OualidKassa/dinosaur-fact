@@ -10,16 +10,27 @@
         this.fact = fact;
         this.image = image;
     }
-    function Dino(array){
-    this.array = [];
-    }
+
 
     // Create Dino Objects
     const getDinoData = async () => {
         const fetchedData = await fetch("dino.json");
         const data = await fetchedData.json();
-
-         return data.Dinos;
+        const dinoTab = [];
+        data.Dinos.map( dino => {
+            const dinoData = new Dino(
+                dino.species,
+                dino.weight,
+                dino.height,
+                dino.diet,
+                dino.where,
+                dino.when,
+                dino.fact,
+                dino.image
+            );
+            dinoTab.push(dinoData);
+        });
+        return dinoTab;
     };
 
     // Create Human Object
@@ -37,26 +48,29 @@
     // Use IIFE to get human data from form
 
     const button = document.getElementById("btn");
-    button.addEventListener("click", function(){
-        const human = new Human("",  "", "", "");
-        // Use IIFE to get human data from form
-        (function getHumanData(){
-            human.name = document.getElementById('name').value;
-            human.height = (document.getElementById('feet').value * 12 ) + document.getElementById('inches').value;
-            human.weight = document.getElementById('weight').value;
-            human.diet = document.getElementById('diet').value;
-        })();
-        console.log(human)
-        if(document.getElementById('grid').style.display == 'none'){
-            document.getElementById('grid').style.display = 'flex';
-            document.getElementById('dino-compare').style.display = 'none';
-        }
-        else {
-            document.getElementById('grid').style.display = 'none';
-            document.getElementById('dino-compare').style.display = 'flex';
-        }
+    (function() {
+        button.addEventListener("click", function(){
+            const human = new Human("",  "", "", "");
+            // Use IIFE to get human data from form
+            (function getHumanData(){
+                human.name = document.getElementById('name').value;
+                human.height = (document.getElementById('feet').value * 12 ) + document.getElementById('inches').value;
+                human.weight = document.getElementById('weight').value;
+                human.diet = document.getElementById('diet').value;
+            })();
+            console.log(human)
+            if(document.getElementById('grid').style.display == 'none'){
+                document.getElementById('grid').style.display = 'flex';
+                document.getElementById('dino-compare').style.display = 'none';
+            }
+            else {
+                document.getElementById('grid').style.display = 'none';
+                document.getElementById('dino-compare').style.display = 'flex';
+            }
 
-    });
+        });
+    })();
+
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
