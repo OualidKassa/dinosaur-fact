@@ -38,7 +38,7 @@
 
     const button = document.getElementById("btn");
     button.addEventListener("click", function(){
-        let human = new Human("",  "", "", "");
+        const human = new Human("",  "", "", "");
         // Use IIFE to get human data from form
         (function getHumanData(){
             human.name = document.getElementById('name').value;
@@ -47,6 +47,15 @@
             human.diet = document.getElementById('diet').value;
         })();
         console.log(human)
+        if(document.getElementById('grid').style.display == 'none'){
+            document.getElementById('grid').style.display = 'flex';
+            document.getElementById('dino-compare').style.display = 'none';
+        }
+        else {
+            document.getElementById('grid').style.display = 'none';
+            document.getElementById('dino-compare').style.display = 'flex';
+        }
+
     });
 
     // Create Dino Compare Method 1
@@ -66,7 +75,7 @@
 
      function makeGrid(rows, cols) {
 
-
+         document.getElementById('grid').style.display = 'none';
          container.style.setProperty('--grid-rows', rows);
          container.style.setProperty('--grid-cols', cols);
          let i = 0;
@@ -79,7 +88,17 @@
              cell.appendChild(h3);
              cell.appendChild(img);
              cell.appendChild(para);
-             if(c == 4) continue;
+             if(c == 4) {
+                 button.addEventListener("click", function(){
+                     let name = '';
+                     (function getHumanName(){
+                         name = document.getElementById('name').value;
+                         h3.innerText = name;
+                     })();
+                 });
+                 img.src = 'images/human.png';
+                 continue;
+             }
              getDinoData().then(data => {
                  if(i < 8){
                          h3.innerText = data[i].species;
