@@ -11,6 +11,9 @@
         this.image = image;
     }
 
+    Dino.prototype.getRandom = function() {
+        return this.fact[Math.floor(Math.random() * this.fact.length)];
+    };
 
     // Create Dino Objects
     const getDinoData = async () => {
@@ -48,7 +51,7 @@
     // Use IIFE to get human data from form
 
     const button = document.getElementById("btn");
-    (function() {
+  (function() {
         button.addEventListener("click", function(){
             const human = new Human("",  "", "", "");
             // Use IIFE to get human data from form
@@ -58,7 +61,7 @@
                 human.weight = document.getElementById('weight').value;
                 human.diet = document.getElementById('diet').value;
             })();
-            console.log(human)
+
             if(document.getElementById('grid').style.display == 'none'){
                 document.getElementById('grid').style.display = 'flex';
                 document.getElementById('dino-compare').style.display = 'none';
@@ -67,22 +70,46 @@
                 document.getElementById('grid').style.display = 'none';
                 document.getElementById('dino-compare').style.display = 'flex';
             }
-
+            return human;
         });
+
     })();
+
 
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
-
+    const compareWeight = (humanWeight, DinoTab) => {
+        if(humanWeight < DinoTab.weight){
+            return `${DinoTab.species} is heavier than human`;
+        } else if (humanWeight > DinoTab.weight) {
+            return `${DinoTab.species} is lighter than human`;
+        } else {
+            return `${DinoTab.species} have the same weight as human`;
+        }
+    }
     
     // Create Dino Compare Method 2
     // NOTE: Weight in JSON file is in lbs, height in inches.
-
+    const compareHeight = (humanHeight, DinoTab) => {
+        if(humanHeight < DinoTab.height){
+            return `${DinoTab.species} is taller than human`;
+        } else if (humanHeight > DinoTab.height) {
+            return `${DinoTab.species} is smaller than human`;
+        } else {
+            return `${DinoTab.species} have the same height as human`;
+        }
+    }
     
     // Create Dino Compare Method 3
     // NOTE: Weight in JSON file is in lbs, height in inches.
-
+    const compareDiet = (humanDiet, DinoTab) => {
+        if(humanDiet === DinoTab.diet){
+            return `${DinoTab.species} have the same diet`;
+        } else {
+            return `${DinoTab.species} have not the same diet`;
+        }
+    }
 
     // Generate Tiles for each Dino in Array
     const container = document.getElementById("grid");
@@ -117,7 +144,15 @@
                  if(i < 8){
                          h3.innerText = data[i].species;
                          img.src = data[i].image;
-                         para.innerText = data[i].fact;
+
+                     const dino = data[i];
+                         button.addEventListener('click', function(){
+                             const humanWeight = document.getElementById('weight').value;
+                             const humanHeight = (document.getElementById('feet').value * 12  + document.getElementById('inches').value);
+                             const humanDiet = document.getElementById('diet').value;
+                             dino.fact.push(compareWeight(humanWeight, dino), compareDiet(humanDiet, dino), compareHeight(humanHeight, dino));
+                             para.innerText = dino.getRandom();
+                         });
                          i++;
                  }
 
