@@ -46,7 +46,11 @@
     }
 
 
-
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min +1)) + min;
+    }
 
     // Use IIFE to get human data from form
 
@@ -79,10 +83,10 @@
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
-    const compareWeight = (humanWeight, DinoTab) => {
-        if(humanWeight < DinoTab.weight){
+    const compareWeight = (human, DinoTab) => {
+        if(human.weight < DinoTab.weight){
             return `${DinoTab.species} is heavier than human`;
-        } else if (humanWeight > DinoTab.weight) {
+        } else if (human.weight  > DinoTab.weight) {
             return `${DinoTab.species} is lighter than human`;
         } else {
             return `${DinoTab.species} have the same weight as human`;
@@ -91,10 +95,10 @@
     
     // Create Dino Compare Method 2
     // NOTE: Weight in JSON file is in lbs, height in inches.
-    const compareHeight = (humanHeight, DinoTab) => {
-        if(humanHeight < DinoTab.height){
+    const compareHeight = (human, DinoTab) => {
+        if(human.height < DinoTab.height){
             return `${DinoTab.species} is taller than human`;
-        } else if (humanHeight > DinoTab.height) {
+        } else if (human.height > DinoTab.height) {
             return `${DinoTab.species} is smaller than human`;
         } else {
             return `${DinoTab.species} have the same height as human`;
@@ -103,8 +107,8 @@
     
     // Create Dino Compare Method 3
     // NOTE: Weight in JSON file is in lbs, height in inches.
-    const compareDiet = (humanDiet, DinoTab) => {
-        if(humanDiet === DinoTab.diet){
+    const compareDiet = (human, DinoTab) => {
+        if(human.diet === DinoTab.diet){
             return `${DinoTab.species} have the same diet`;
         } else {
             return `${DinoTab.species} have not the same diet`;
@@ -146,12 +150,29 @@
                          img.src = data[i].image;
 
                      const dino = data[i];
+
                          button.addEventListener('click', function(){
                              const humanWeight = document.getElementById('weight').value;
                              const humanHeight = (document.getElementById('feet').value * 12  + document.getElementById('inches').value);
                              const humanDiet = document.getElementById('diet').value;
-                             dino.fact.push(compareWeight(humanWeight, dino), compareDiet(humanDiet, dino), compareHeight(humanHeight, dino));
-                             para.innerText = dino.getRandom();
+                             const human = new Human(
+                                 '',
+                                 humanWeight,
+                                 humanDiet,
+                                 humanHeight);
+
+
+                             const factRandom = [
+                                 compareHeight(human, dino),
+                                 compareDiet(human, dino),
+                                 compareWeight(human, dino),
+                                 dino.fact
+                             ];
+                             if(dino.species === 'Pigeon'){
+                                 para.innerText = dino.fact;
+                             }else {
+                                 para.innerText = factRandom[getRandomIntInclusive(0, 3)];
+                             }
                          });
                          i++;
                  }
