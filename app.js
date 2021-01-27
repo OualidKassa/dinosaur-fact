@@ -11,10 +11,6 @@
         this.image = image;
     }
 
-    Dino.prototype.getRandom = function() {
-        return this.fact[Math.floor(Math.random() * this.fact.length)];
-    };
-
     // Create Dino Objects
     const getDinoData = async () => {
         const fetchedData = await fetch("dino.json");
